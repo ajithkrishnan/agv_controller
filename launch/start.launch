@@ -36,5 +36,6 @@
       <param name="max_loop_frequency" value="50.0" />
       <param name="min_loop_frequency" value="15.0" />
      </node>
-    <node pkg="position_controller" type="position_controller.py" name="position_controller" output="screen"/>
+    <node pkg="etarob_position_controller" type="setpoint_broadcaster.py" name="etarob_setpoint_broadcaster" output="screen"/>
+    <node pkg="etarob_position_controller" type="position_controller.py" name="etarob_position_controller" output="screen"/>
 </launch>
