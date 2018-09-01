@@ -121,7 +121,7 @@ if __name__ == "__main__":
     args, unknown = parser.parse_known_args()
 
     try:
-        rospy.init_node("summit_xl_a_setpoint_broadcaster")
+        rospy.init_node("setpoint_broadcaster")
 
         sb = SetpointBroadcaster(rospy.get_name())
         rate = rospy.Rate(args.rate)

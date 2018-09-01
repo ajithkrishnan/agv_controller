@@ -90,7 +90,7 @@ class PositionController(object):
         self.control_effort_y = Float64()
         self.control_effort_yaw = Float64()
 
-        self.pid_enabled = False
+        self.pid_enabled = True
 
         rospy.on_shutdown(self.cleanup)
 
@@ -223,7 +223,7 @@ if __name__ == "__main__":
     args, unknown = parser.parse_known_args()
 
     try:
-        rospy.init_node("summit_xl_a_position_controller")
+        rospy.init_node("position_controller")
 
         pc = PositionController(rospy.get_name())
         rate = rospy.Rate(args.rate)
