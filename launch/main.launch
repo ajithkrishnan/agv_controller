@@ -69,6 +69,6 @@
 		<arg name="amcl_and_mapserver_c" value="$(arg amcl_and_mapserver_c)"/>
 		<arg name="map_file_c" value="$(arg map_file_c)"/>
 		<arg name="xacro_robot_c" value="$(arg xacro_robot_c)"/>
-
+	</include>
 	
 </launch>
