@@ -66,7 +66,7 @@ class SetpointBroadcaster(object):
 
         self.setpoint = PoseStamped()
         self.t = TransformStamped()
-        self.t.header.frame_id = "odom"
+        self.t.header.frame_id = "summit_xl_a_odom"
         self.t.child_frame_id = "setpoint_pose"
         self.t.transform.translation.x = 0
         self.t.transform.translation.y = 0

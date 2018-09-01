@@ -116,7 +116,7 @@ class PositionController(object):
     def atSetpointPos(self):
         deadband = 0.025
         disp = False
-        disp = self.lookupTransform("base_footprint", "setpoint_pose")
+        disp = self.lookupTransform("summit_xl_a_base_footprint", "setpoint_pose")
         if disp:
             displacement = sqrt(disp.transform.translation.x**2 + disp.transform.translation.y**2)
             if displacement <= deadband:
@@ -130,7 +130,7 @@ class PositionController(object):
     def atSetpointYaw(self):
         deadband = 0.17453 # 10 deg in rad
         disp = False
-        disp = self.lookupTransform("base_footprint", "setpoint_pose")
+        disp = self.lookupTransform("summit_xl_a_base_footprint", "setpoint_pose")
         if disp:
             quat = [disp.transform.rotation.x, disp.transform.rotation.y, 
                     disp.transform.rotation.z, disp.transform.rotation.w]
@@ -152,8 +152,8 @@ class PositionController(object):
             setpoint = False
             trans = False
             
-            setpoint = self.lookupTransform("base_footprint", "setpoint_pose")
-            trans = self.lookupTransform("setpoint_pose", "base_footprint")
+            setpoint = self.lookupTransform("summit_xl_a_base_footprint", "setpoint_pose")
+            trans = self.lookupTransform("setpoint_pose", "summit_xl_a_base_footprint")
             
             if setpoint and trans:
                 #setpoint
