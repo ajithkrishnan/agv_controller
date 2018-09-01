@@ -63,20 +63,20 @@ class PositionController(object):
 
         self.tfBuffer = tf2_ros.Buffer()
         self.listener = tf2_ros.TransformListener(self.tfBuffer)
-        self.service = rospy.Service('/etarob/enable_pos_ctrl', SetBool, self.handle_service)
-        self.activator_x = rospy.Publisher("/etarob/pid_x/pid_enable", Bool, queue_size=1)
-        self.activator_y = rospy.Publisher("/etarob/pid_y/pid_enable", Bool, queue_size=1)
-        self.activator_yaw = rospy.Publisher("/etarob/pid_yaw/pid_enable", Bool, queue_size=1)
-        self.sub_pid_x_effort = rospy.Subscriber("/etarob/pid_x/control_effort", Float64, self.callback_x)
-        self.sub_pid_y_effort = rospy.Subscriber("/etarob/pid_y/control_effort", Float64, self.callback_y)
-        self.sub_pid_yaw_effort = rospy.Subscriber("/etarob/pid_yaw/control_effort", Float64, self.callback_yaw)
-        self.pub_pid_x_state = rospy.Publisher("/etarob/pid_x/state", Float64, queue_size=1)
-        self.pub_pid_y_state = rospy.Publisher("/etarob/pid_y/state", Float64, queue_size=1)
-        self.pub_pid_yaw_state = rospy.Publisher("/etarob/pid_yaw/state", Float64, queue_size=1)
-        self.pub_pid_x_setpoint = rospy.Publisher("/etarob/pid_x/setpoint", Float64, queue_size=1)
-        self.pub_pid_y_setpoint = rospy.Publisher("/etarob/pid_y/setpoint", Float64, queue_size=1)
-        self.pub_pid_yaw_setpoint = rospy.Publisher("/etarob/pid_yaw/setpoint", Float64, queue_size=1)
-        self.pub_cmd = rospy.Publisher("/etarob/cmd_vel", Twist, queue_size=1)
+        self.service = rospy.Service('/summit_xl_a/enable_pos_ctrl', SetBool, self.handle_service)
+        self.activator_x = rospy.Publisher("/summit_xl_a/pid_x/pid_enable", Bool, queue_size=1)
+        self.activator_y = rospy.Publisher("/summit_xl_a/pid_y/pid_enable", Bool, queue_size=1)
+        self.activator_yaw = rospy.Publisher("/summit_xl_a/pid_yaw/pid_enable", Bool, queue_size=1)
+        self.sub_pid_x_effort = rospy.Subscriber("/summit_xl_a/pid_x/control_effort", Float64, self.callback_x)
+        self.sub_pid_y_effort = rospy.Subscriber("/summit_xl_a/pid_y/control_effort", Float64, self.callback_y)
+        self.sub_pid_yaw_effort = rospy.Subscriber("/summit_xl_a/pid_yaw/control_effort", Float64, self.callback_yaw)
+        self.pub_pid_x_state = rospy.Publisher("/summit_xl_a/pid_x/state", Float64, queue_size=1)
+        self.pub_pid_y_state = rospy.Publisher("/summit_xl_a/pid_y/state", Float64, queue_size=1)
+        self.pub_pid_yaw_state = rospy.Publisher("/summit_xl_a/pid_yaw/state", Float64, queue_size=1)
+        self.pub_pid_x_setpoint = rospy.Publisher("/summit_xl_a/pid_x/setpoint", Float64, queue_size=1)
+        self.pub_pid_y_setpoint = rospy.Publisher("/summit_xl_a/pid_y/setpoint", Float64, queue_size=1)
+        self.pub_pid_yaw_setpoint = rospy.Publisher("/summit_xl_a/pid_yaw/setpoint", Float64, queue_size=1)
+        self.pub_cmd = rospy.Publisher("/summit_xl_a/cmd_vel", Twist, queue_size=1)
 
         self.cmd = Twist()
         self.pos_x = .0
@@ -223,7 +223,7 @@ if __name__ == "__main__":
     args, unknown = parser.parse_known_args()
 
     try:
-        rospy.init_node("etarob_position_controller")
+        rospy.init_node("summit_xl_a_position_controller")
 
         pc = PositionController(rospy.get_name())
         rate = rospy.Rate(args.rate)

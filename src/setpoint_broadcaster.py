@@ -47,7 +47,7 @@ import tf2_ros
 
 from geometry_msgs.msg import Twist, TransformStamped, PoseStamped
 from std_msgs.msg import Float64
-from etarob_msgs.srv import *
+# from summit_xl_a_msgs.srv import *
 
 
 class SetpointBroadcaster(object):
@@ -61,12 +61,12 @@ class SetpointBroadcaster(object):
         self._name = name
         self.br = tf2_ros.TransformBroadcaster()
         # using Topic AND Service for handling single and looping pose change
-        self.service = rospy.Service('/etarob/setpoint_pose', SetPose, self.handle_service)
-        self.sub_sp = rospy.Subscriber("/etarob/sp_pose", PoseStamped, self.callbackSetpoint)
+        # self.service = rospy.Service('/summit_xl_a/setpoint_pose', SetPose, self.handle_service)
+        self.sub_sp = rospy.Subscriber("/summit_xl_a/sp_pose", PoseStamped, self.callbackSetpoint)
 
         self.setpoint = PoseStamped()
         self.t = TransformStamped()
-        self.t.header.frame_id = "map"
+        self.t.header.frame_id = "odom"
         self.t.child_frame_id = "setpoint_pose"
         self.t.transform.translation.x = 0
         self.t.transform.translation.y = 0
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     args, unknown = parser.parse_known_args()
 
     try:
-        rospy.init_node("etarob_setpoint_broadcaster")
+        rospy.init_node("summit_xl_a_setpoint_broadcaster")
 
         sb = SetpointBroadcaster(rospy.get_name())
         rate = rospy.Rate(args.rate)
