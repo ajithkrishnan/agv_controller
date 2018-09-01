@@ -124,6 +124,8 @@ class PositionController(object):
         self.targetPos.transform.translation.x = inp_x            
         self.targetPos.transform.translation.y = inp_y            
         quatr = tf.transformations.quaternion_from_euler(0,0,inp_yaw)
+        print "Quaternion angle = "
+        print quatr
         self.targetPos.transform.rotation = quatr
         # pc.targetPos.sendTransform((sp_x,sp_y,0),tf.transformations.quaternion_from_euler(0,0,sp_yaw), rospy.Time.now(), "summit_xl_a_base_footprint", "summit_xl_a_odom")
 
