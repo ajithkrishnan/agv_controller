@@ -76,8 +76,11 @@ class PositionController(object):
         self.pub_pid_x_setpoint = rospy.Publisher("/summit_xl_a/pid_x/setpoint", Float64, queue_size=1)
         self.pub_pid_y_setpoint = rospy.Publisher("/summit_xl_a/pid_y/setpoint", Float64, queue_size=1)
         self.pub_pid_yaw_setpoint = rospy.Publisher("/summit_xl_a/pid_yaw/setpoint", Float64, queue_size=1)
+        self.sub_pid_yaw_effort_vel = rospy.Subscriber("/summit_xl_a/pid_yaw_vel/control_effort", Float64, self.callback_yaw_vel)
+        self.pub_pid_yaw_state_vel = rospy.Publisher("/summit_xl_a/pid_yaw_vel/state", Float64, queue_size=1)
+        self.pub_pid_yaw_setpoint_vel = rospy.Publisher("/summit_xl_a/pid_yaw_vel/setpoint", Float64, queue_size=1)         
         self.pub_cmd = rospy.Publisher("/summit_xl_a/cmd_vel", Twist, queue_size=1)
-
+        
         self.cmd = Twist()
         self.pos_x = .0
         self.pos_y = .0
@@ -89,6 +92,11 @@ class PositionController(object):
         self.control_effort_x = Float64()
         self.control_effort_y = Float64()
         self.control_effort_yaw = Float64()
+
+        # velocity parameters
+        self.yaw_vel = .0
+        self.sp_yaw_vel = Float64()
+        self.control_effort_yaw_vel = Float64()
 
         self.pid_enabled = True
 
@@ -154,13 +162,16 @@ class PositionController(object):
             
             setpoint = self.lookupTransform("summit_xl_a_base_footprint", "setpoint_pose")
             trans = self.lookupTransform("setpoint_pose", "summit_xl_a_base_footprint")
-            
+            setpoint_vel = 0.1
+            yaw_vel = self.cmd.angular.z
+                     
             if setpoint and trans:
                 #setpoint
                 
                 self.pub_pid_x_setpoint.publish(0)
                 self.pub_pid_y_setpoint.publish(0)
                 self.pub_pid_yaw_setpoint.publish(0)
+                #self.pub_pid_yaw_setpoint_vel.publish(self.setpoint_vel)
 
                 #trans
                 
@@ -170,20 +181,25 @@ class PositionController(object):
                         trans.transform.rotation.z, trans.transform.rotation.w]
                 euler = tf.transformations.euler_from_quaternion(quat)
                 self.yaw = euler[2]
+                
                 self.pub_pid_x_state.publish(self.pos_x)
                 self.pub_pid_y_state.publish(self.pos_y)
                 self.pub_pid_yaw_state.publish(self.yaw)
+                self.pub_pid_yaw_state_vel.publish(self.yaw_vel)
 
                 if not self.atSetpointYaw():
                     self.cmd.linear.x = 0
                     self.cmd.linear.y = 0
                     self.cmd.angular.z = self.control_effort_yaw.data
-                    self.pub_cmd.publish(self.cmd)
-                elif not self.atSetpointPos():
+                    #self.cmd.angular.z = self.control_effort_yaw_vel.data
+                    #self.pub_cmd.publish(self.cmd)
+                    
+                elif not self.atSetpointPos():                    
                     self.cmd.linear.x = self.control_effort_x.data
                     self.cmd.linear.y = self.control_effort_y.data
                     self.cmd.angular.z = self.control_effort_yaw.data
-                    self.pub_cmd.publish(self.cmd)
+                    #self.cmd.angular.z = self.control_effort_yaw_vel.data
+                    #self.pub_cmd.publish(self.cmd)
 
 
     def callback_x(self, msg):
@@ -194,6 +210,9 @@ class PositionController(object):
 
     def callback_yaw(self, msg):
         self.control_effort_yaw = msg
+    
+    def callback_yaw_vel(self,msg):
+        self.control_effort_yaw_vel = msg
 
     def handle_service(self, req):
         rate = rospy.Rate(25)
