@@ -70,5 +70,9 @@
 		<arg name="map_file_c" value="$(arg map_file_c)"/>
 		<arg name="xacro_robot_c" value="$(arg xacro_robot_c)"/>
 	</include>
+<<<<<<< HEAD
 	
+=======
+        
+>>>>>>> 7cac926ceb56da1de56020495e27240837400d1b
 </launch>
