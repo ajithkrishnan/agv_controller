@@ -63,20 +63,20 @@ class PositionController(object):
 
         self.tfBuffer = tf2_ros.Buffer()
         self.listener = tf2_ros.TransformListener(self.tfBuffer)
-        self.service = rospy.Service('/summit_xl_a/enable_pos_ctrl', SetBool, self.handle_service)
-        self.activator_x = rospy.Publisher("/summit_xl_a/pid_x/pid_enable", Bool, queue_size=1)
-        self.activator_y = rospy.Publisher("/summit_xl_a/pid_y/pid_enable", Bool, queue_size=1)
-        self.activator_yaw = rospy.Publisher("/summit_xl_a/pid_yaw/pid_enable", Bool, queue_size=1)
-        self.sub_pid_x_effort = rospy.Subscriber("/summit_xl_a/pid_x/control_effort", Float64, self.callback_x)
-        self.sub_pid_y_effort = rospy.Subscriber("/summit_xl_a/pid_y/control_effort", Float64, self.callback_y)
-        self.sub_pid_yaw_effort = rospy.Subscriber("/summit_xl_a/pid_yaw/control_effort", Float64, self.callback_yaw)
-        self.pub_pid_x_state = rospy.Publisher("/summit_xl_a/pid_x/state", Float64, queue_size=1)
-        self.pub_pid_y_state = rospy.Publisher("/summit_xl_a/pid_y/state", Float64, queue_size=1)
-        self.pub_pid_yaw_state = rospy.Publisher("/summit_xl_a/pid_yaw/state", Float64, queue_size=1)
-        self.pub_pid_x_setpoint = rospy.Publisher("/summit_xl_a/pid_x/setpoint", Float64, queue_size=1)
-        self.pub_pid_y_setpoint = rospy.Publisher("/summit_xl_a/pid_y/setpoint", Float64, queue_size=1)
-        self.pub_pid_yaw_setpoint = rospy.Publisher("/summit_xl_a/pid_yaw/setpoint", Float64, queue_size=1)
-        self.pub_cmd = rospy.Publisher("/summit_xl_a/cmd_vel", Twist, queue_size=1)
+        self.service = rospy.Service('/agv_mecanum/enable_pos_ctrl', SetBool, self.handle_service)
+        self.activator_x = rospy.Publisher("/agv_mecanum/pid_x/pid_enable", Bool, queue_size=1)
+        self.activator_y = rospy.Publisher("/agv_mecanum/pid_y/pid_enable", Bool, queue_size=1)
+        self.activator_yaw = rospy.Publisher("/agv_mecanum/pid_yaw/pid_enable", Bool, queue_size=1)
+        self.sub_pid_x_effort = rospy.Subscriber("/agv_mecanum/pid_x/control_effort", Float64, self.callback_x)
+        self.sub_pid_y_effort = rospy.Subscriber("/agv_mecanum/pid_y/control_effort", Float64, self.callback_y)
+        self.sub_pid_yaw_effort = rospy.Subscriber("/agv_mecanum/pid_yaw/control_effort", Float64, self.callback_yaw)
+        self.pub_pid_x_state = rospy.Publisher("/agv_mecanum/pid_x/state", Float64, queue_size=1)
+        self.pub_pid_y_state = rospy.Publisher("/agv_mecanum/pid_y/state", Float64, queue_size=1)
+        self.pub_pid_yaw_state = rospy.Publisher("/agv_mecanum/pid_yaw/state", Float64, queue_size=1)
+        self.pub_pid_x_setpoint = rospy.Publisher("/agv_mecanum/pid_x/setpoint", Float64, queue_size=1)
+        self.pub_pid_y_setpoint = rospy.Publisher("/agv_mecanum/pid_y/setpoint", Float64, queue_size=1)
+        self.pub_pid_yaw_setpoint = rospy.Publisher("/agv_mecanum/pid_yaw/setpoint", Float64, queue_size=1)
+        self.pub_cmd = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
 
         self.cmd = Twist()
         self.pos_x = .0
@@ -116,7 +116,7 @@ class PositionController(object):
     def atSetpointPos(self):
         deadband = 0.025
         disp = False
-        disp = self.lookupTransform("summit_xl_a_base_footprint", "setpoint_pose")
+        disp = self.lookupTransform("agv_base_footprint", "setpoint_pose")
         if disp:
             displacement = sqrt(disp.transform.translation.x**2 + disp.transform.translation.y**2)
             if displacement <= deadband:
@@ -130,7 +130,7 @@ class PositionController(object):
     def atSetpointYaw(self):
         deadband = 0.17453 # 10 deg in rad
         disp = False
-        disp = self.lookupTransform("summit_xl_a_base_footprint", "setpoint_pose")
+        disp = self.lookupTransform("agv_base_footprint", "setpoint_pose")
         if disp:
             quat = [disp.transform.rotation.x, disp.transform.rotation.y, 
                     disp.transform.rotation.z, disp.transform.rotation.w]
@@ -152,8 +152,8 @@ class PositionController(object):
             setpoint = False
             trans = False
             
-            setpoint = self.lookupTransform("summit_xl_a_base_footprint", "setpoint_pose")
-            trans = self.lookupTransform("setpoint_pose", "summit_xl_a_base_footprint")
+            setpoint = self.lookupTransform("agv_base_footprint", "setpoint_pose")
+            trans = self.lookupTransform("setpoint_pose", "agv_base_footprint")
             
             if setpoint and trans:
                 #setpoint

@@ -61,12 +61,12 @@ class SetpointBroadcaster(object):
         self._name = name
         self.br = tf2_ros.TransformBroadcaster()
         # using Topic AND Service for handling single and looping pose change
-        # self.service = rospy.Service('/summit_xl_a/setpoint_pose', SetPose, self.handle_service)
-        self.sub_sp = rospy.Subscriber("/summit_xl_a/sp_pose", PoseStamped, self.callbackSetpoint)
+        # self.service = rospy.Service('/agv_mecanum/setpoint_pose', SetPose, self.handle_service)
+        self.sub_sp = rospy.Subscriber("/agv_mecanum/sp_pose", PoseStamped, self.callbackSetpoint)
 
         self.setpoint = PoseStamped()
         self.t = TransformStamped()
-        self.t.header.frame_id = "summit_xl_a_odom"
+        self.t.header.frame_id = "odom"
         self.t.child_frame_id = "setpoint_pose"
         self.t.transform.translation.x = 0
         self.t.transform.translation.y = 0
